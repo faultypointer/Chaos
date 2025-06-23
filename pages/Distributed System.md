@@ -1,0 +1,88 @@
+## Contents
+	- ((6858aace-5258-46d5-a174-b5a66b83dd01))
+		- ((6858ac12-7876-40d7-abfa-36e7a54b46a8))
+		- ((6858ae64-e3b7-445f-a2ee-eaf46585869e))
+		- ((6858b0e0-689c-4a07-921c-b8e22a6a851d))
+		- ((6858b605-a9b9-4a28-b872-9af2603f7f51))
+		-
+- # Introduction
+- # Distributed Objects and File System
+- # Coordination and Agreement
+  id:: 6858aace-5258-46d5-a174-b5a66b83dd01
+- ## Mutual Exclusion
+  id:: 6858ac12-7876-40d7-abfa-36e7a54b46a8
+	- ensure that only one process at a time can access the shared resource
+	- more difficult in distributed system due to no shared memory or clock
+	- why mutual exclusion?
+		- prevent data inconsistency
+		- maintain integrity
+		- avoid race conditions
+		- coordinate access to resource
+	- Requirements
+		- mutual exclusion (obviously)
+		- progress (if no one in CS and some want to enter, one of them must be allowed to enter)
+		- bounded waiting
+		- no deadlock
+		- no starvation
+		- fault tolerance
+	- There are two types of algorithm for implementing mutual exclusion in distributed system.
+		- Non-token based
+		- Token based
+- ## Central Coordination Algorithm
+  id:: 6858ae64-e3b7-445f-a2ee-eaf46585869e
+	- simple non-token based algorithm for achieving mutual exclusion
+	- A central coordination is present in the distributed system. Only it can grant or deny access to the critical section
+	- **Algorithm**
+		- Let, $P_1, P_2, ... P_n$ be the processes and $C$ be the coordination
+		- Request Phase
+			- A process $P_i$ sends a REQUEST message to the coordination when it wants to enter CS
+		- Grant Phase
+			- If no other processes are in CS, the coordination sends the GRANT message back to the requesting process.
+			- If the CS is busy, the request is queued.
+		- CS Execution
+			- After receiving GRANT from the coordination, the process enters the CS
+		- Release Phase
+			- after process finishes its work in CS, it sends a RELEASE message to the coordinator. The coordinator then grants permission to next process in there are any in the queue
+	- Advantages
+		- simple and easy
+		- requires only 3 messages per use of CS
+		- fairness
+	- Disadvantages
+		- coordinator can become performance bottleneck
+		- coordinator is a point of failure
+- ## Ricart-Agrawala Non Token Based Algorithm
+  id:: 6858b0e0-689c-4a07-921c-b8e22a6a851d
+	- based on distributed agreement not central coordinator
+	- the process that wants to enter CS sends request message to all other processes and only when it has received messages from all other processes can it enter CS
+	- the request message is of the form $[T(P_i), i]$, where $T(P_i)$ is the process's timestamp and $i$ is its identifier
+	- Each process is in one of three state with respect to CS: Released, Requested, Held
+	- **Algorithms/Rules**
+		- **Rule for Process Initialization**
+			- performed by all processes
+			- State($P_i$) := RELEASED
+		- **Rule for access request**
+			- when process $P_i$ wants to access the CS. it does the following
+			- State($P_i$) := REQUESTED
+			- $P_i$ sends a request message to all other processes
+			- it then waits until it receives replies from all other processes
+		- **Rule for executing the CS**
+			- when process $P_i$ receives replies from all other process, it
+			- State($P_i$) := HELD
+			- $P_i$ enters CS
+		- **Rule for handling incoming requests**
+			- when process $P_i$ receives a request message from process $P_j$ (the message being $[T(P_j), j]$)
+			- if $P_i$ is in the CS, that is State($P_i$) := HELD then queue the request without replying
+			- if $P_i$ has also requested for the CS (State($P_i$) := REQUESTED) then it checks the priority. if $[T(P_i), i] \lt [T(P_j), j]$ (basically if $P_i$ made the request earlier than $P_j$) then also the request is queued without replying
+			- otherwise reply immediately to $P_j$
+		- **Rule for releasing CS**
+			- after $P_i$ finishes its work in CS
+			- State($P_i$) := RELEASED
+			- reply to all queued requests
+	- **Problems**
+		- expensive in terms of message traffic: 2(n-1) messages required for each CS entry
+		- failure of any process requires special recovery measures
+- ## Ricart-Agrawala Token Based Algorithm
+  id:: 6858b605-a9b9-4a28-b872-9af2603f7f51
+	-
+-
+- #bct #semester-seven

@@ -1,0 +1,7 @@
+- I have a subject called "Organization and Management" this semester so it seems like the perfect time to talk about organization and management.
+- The organization and management I'm going to be taking about is in no way similar to the subject. I think. To be honest, I haven't even looked at the syllabus for the subject. I only talked about it because I had no idea how to start this rant.
+- The organization and management that I'm taking about is the organization and management of mostly notes. Notes for the course subjects each semester (like Organization and Management), notes for the interesting article I read, notes for other stuff I learn (and eventually stop midway). It also involves other things aside from notes like ideas, other writing stuff (like this rant), links to some interesting and useful resources, journals (which I will, again, stop after just few days).
+- I like the idea of organizing such notes. Having pages and pages of information that you've filled over a significant amount of time, whether by summarizing a textbook or writing out your thoughts, appear as an interconnected web that somewhat reflects your personality is a dream of mine.
+- But that dream may always be a dream.
+-
+- #rant #writing
