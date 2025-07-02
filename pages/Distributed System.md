@@ -22,6 +22,85 @@
 		- ((685f4327-261f-43bf-9587-41c848881460))
 - # Introduction
 - # Distributed Objects and File System
+	- ## Remote Procedure Call
+		- **Implementation**
+			- The client calls the client stub. This is a local procedural call.
+			  logseq.order-list-type:: number
+			- The client stub packs the procedure parameters in to a message (marshalling) and makes a system call to send the message. 
+			  logseq.order-list-type:: number
+			- The clients host os sends the message to remote server's machine
+			  logseq.order-list-type:: number
+			- The dispatcher selects one of the server stub procedures according to procedure identifier in request message
+			  logseq.order-list-type:: number
+			- The server stub unmarshalls the parameters from the message and calls the corresponding service procedure
+			  logseq.order-list-type:: number
+			- The service procedure executes the operations and returns the result to server stub which then marshalls the result into a message
+			  logseq.order-list-type:: number
+			- the server stub then hands the message to transport layer
+			  logseq.order-list-type:: number
+			- The transport layer than sends the message to client's transport layer which hands the message to client stub
+			  logseq.order-list-type:: number
+			- The client stub unmarshalls the message to obtain the result and returns to the caller
+			  logseq.order-list-type:: number
+		- **Advantages**
+			- can be used in distributes as well as local environments
+			- hides internal message passing mechanism
+			- supports process as well as thread oriented model
+			- requires only minimal efforts to rewrite and redevelop the code
+			- provides abstraction
+		- **Disadvantages**
+			- not always suited for transferring large amount of data
+			- highly vulnerable to failures
+			- no uniform standard
+	- ## Remote Method Invocation
+		- similar to RPC but extended to objects where a calling object can invoke method on a potentially remote object
+		- ### Components
+			- **Proxy/Client Stub**
+				- a proxy for an actual object that resides on a remote server
+				- it lives in the client side and acts as an actual object. when a method is called on the stub, it forwards the request to actual object on remote server
+				- When the client invokes a method on the stub, the stub marshalls the method's name, parameters, other metadatas into a message and sends it across the network and waits for the response
+				- upon receiving the response, it unmarshalls the return values from the response message and returns the result to the caller
+			- **Remote Reference Module**
+				- it is a part of the runtime system that manages remote references, interprets remote reference to route method call to actual object, handle communication logic, connection handling stc
+				- A remote reference is a special type of reference that is used to identify actual object on a remote system. It contains enough information like ip address of server, port number of the server process, object identifier to uniquely identify the object required to reach actual object
+				- The client stub uses RMM to actually send the message request to remote server.
+				- On server side, the RMM receives the request message, and sends it to the dispatcher using the object id
+			- **Dispatcher**
+				- A server has one dispatcher for each class
+				- receives remote call request and identifies which method is being called based on method ID and forwards the call to the skeleton
+			- **Skeleton**
+				- acts as a server side stub
+				- it unmarshalls the arguments in request message and invokes corresponding methods on servants
+				- it then waits for the invocation to finish after which it marshalls the result in a reply message
+			- **Servants**
+				- instance of actual class responsible for actually handling the remote request
+	- ## Distributed File System
+		- file system over a network that allows users to access files stored across multiple servers as if they were stored locally
+		- Eg: Andrew File System, Google File System, SUN's NFS etc
+		- **Characteristics**
+			- Transparent access to remote files
+			- location transparency
+			- concurrency control
+			- fault tolerance
+		- **Why**
+			- scalability
+			- fault tolerance
+			- data sharing
+			- performance
+			- decentralization
+		- ### Architecture
+			- **Client Module**
+				- runs on each client's computer and provides integrated servers through a single API to application programs
+				- holds info about flat-file directory server processes
+				- implements cache to improve performance
+				- provides interactions between user and the file system
+				- provides syscalls for open, read, write etc
+			- **Directory Service**
+				- mapping between file names and their Unique File Identifiers (UFIDs)
+				- functions needed to generate new directories, add new files to directories, obtain UFIDs from directories
+			- **Flat File Service**
+				- implementations of operations on the content of the files
+				- responsible for reading writing files
 - # Time and State in Distributed System
   id:: 68614990-3dbd-4959-be19-5f9e031313f0
 	- no concept of a global clock in distributed system
